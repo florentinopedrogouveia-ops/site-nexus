@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEXUS Agency — Soluções Digitais</title>
+  <meta name="description" content="Criamos experiências digitais excepcionais através de design estratégico, marketing orientado por dados e produção audiovisual de alto impacto." />
+  <meta property="og:title" content="NEXUS Agency" />
+  <meta property="og:description" content="Soluções digitais que conectam marcas a resultados." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Rubik:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── RESET & BASE ─────────────────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    /* ─── TOKENS ────────────────────────────────────────────── */
+    :root {
+      --bg:            hsl(220, 20%, 4%);
+      --bg2:           hsl(220, 20%, 8%);
+      --bg3:           hsl(220, 20%, 12%);
+      --border:        hsl(220, 15%, 18%);
+      --text:          hsl(0, 0%, 98%);
+      --muted:         hsl(220, 10%, 60%);
+      --primary:       hsl(220, 70%, 45%);
+      --primary-l:     hsl(220, 70%, 58%);
+      --primary-glow:  hsla(220, 70%, 50%, 0.14);
+      --primary-glow2: hsla(220, 70%, 50%, 0.07);
+      --radius-sm:     8px;
+      --radius-md:     12px;
+      --radius-lg:     20px;
+      --font-display:  'Montserrat', sans-serif;
+      --font-body:     'Rubik', sans-serif;
+      --nav-h:         72px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
+    }
+
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── SCROLLBAR ─────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+    /* ─── NAVBAR ────────────────────────────────────────────── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      z-index: 900;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(1.5rem, 5vw, 3.5rem);
+      background: hsla(220, 20%, 4%, 0.75);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      transition: background .3s;
+    }
+    .nav.scrolled { background: hsla(220, 20%, 4%, 0.96); }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: -0.03em;
+    }
+    .nav-logo span { color: var(--primary-l); }
+
+    .nav-links {
+      display: flex; gap: 2.5rem; list-style: none;
+    }
+    .nav-links a {
+      font-size: .8rem; letter-spacing: .09em;
+      text-transform: uppercase; color: var(--muted);
+      transition: color .25s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute;
+      bottom: -4px; left: 0; right: 100%;
+      height: 1px; background: var(--primary-l);
+      transition: right .3s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover::after { right: 0; }
+
+    .nav-cta {
+      background: var(--primary);
+      color: #fff;
+      padding: .55rem 1.4rem;
+      border-radius: 99px;
+      font-size: .82rem;
+      font-weight: 500;
+      transition: background .25s, transform .2s;
+    }
+    .nav-cta:hover { background: var(--primary-l); transform: translateY(-1px); }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column; gap: 5px; cursor: pointer; padding: 4px;
+    }
+    .nav-toggle span {
+      display: block; width: 24px; height: 2px;
+      background: var(--text); border-radius: 2px;
+      transition: transform .3s, opacity .3s;
+    }
+    .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .nav-mobile {
+      display: none; position: fixed;
+      top: var(--nav-h); left: 0; right: 0;
+      background: var(--bg2); border-bottom: 1px solid var(--border);
+      padding: 1.5rem 2rem 2rem;
+      z-index: 899;
+      flex-direction: column; gap: 1.2rem;
+    }
+    .nav-mobile.open { display: flex; }
+    .nav-mobile a { font-size: 1rem; color: var(--muted); padding: .4rem 0; }
+    .nav-mobile a:hover { color: var(--text); }
+    .nav-mobile .nav-cta { width: fit-content; margin-top: .5rem; }
+
+    /* ─── HERO ──────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: var(--nav-h) clamp(1.5rem, 5vw, 3.5rem) 4rem;
+      position: relative; overflow: hidden;
+    }
+
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 72px 72px;
+      opacity: .4;
+      pointer-events: none;
+    }
+    .hero-grid::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 50% 50%, transparent 30%, var(--bg) 80%);
+    }
+
+    .hero-orb {
+      position: absolute; top: 10%; right: 5%;
+      width: 500px; height: 500px;
+      background: var(--primary);
+      opacity: .06; border-radius: 50%; filter: blur(110px);
+      pointer-events: none; animation: float 8s ease-in-out infinite;
+    }
+    .hero-orb2 {
+      position: absolute; bottom: 5%; left: 0%;
+      width: 300px; height: 300px;
+      background: var(--primary-l);
+      opacity: .04; border-radius: 50%; filter: blur(80px);
+      pointer-events: none; animation: float 10s ease-in-out infinite reverse;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-30px); }
+    }
+
+    .hero-content { position: relative; z-index: 1; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: var(--primary-glow);
+      border: 1px solid hsla(220, 70%, 55%, .22);
+      color: var(--primary-l);
+      padding: .35rem 1rem; border-radius: 99px;
+      font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
+      margin-bottom: 2rem; width: fit-content;
+    }
+    .hero-badge::before {
+      content: ''; width: 6px; height: 6px;
+      background: var(--primary-l); border-radius: 50%;
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:.15; } }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(2.6rem, 6.5vw, 5.5rem);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+      max-width: 900px;
+      margin-bottom: 1.4rem;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--primary-l);
+      position: relative;
+    }
+    .hero h1 em::after {
+      content: '';
+      position: absolute; left: 0; bottom: -.08em; right: 0; height: .06em;
+      background: var(--primary-l); opacity: .35; border-radius: 2px;
+    }
+
+    .hero-sub {
+      font-size: 1.05rem; color: var(--muted);
+      max-width: 500px; line-height: 1.78;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 5rem; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .85rem 1.8rem; border-radius: 99px;
+      font-size: .92rem; font-weight: 500;
+      transition: background .25s, transform .2s, border-color .25s;
+      cursor: pointer; border: none;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-l); }
+    .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-outline:hover { border-color: var(--primary); }
+
+    .hero-stats {
+      display: flex; gap: clamp(2rem, 5vw, 4rem);
+      border-top: 1px solid var(--border);
+      padding-top: 2rem; flex-wrap: wrap;
+    }
+    .stat-num {
+      font-family: var(--font-display); font-weight: 800;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      color: var(--primary-l); line-height: 1;
+    }
+    .stat-label { font-size: .78rem; color: var(--muted); margin-top: .3rem; letter-spacing: .04em; }
+
+    /* ─── SECTION COMMON ────────────────────────────────────── */
+    .section { padding: clamp(4rem, 10vw, 8rem) clamp(1.5rem, 5vw, 3.5rem); }
+    .section-tag {
+      font-size: .7rem; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--primary-l);
+      margin-bottom: .8rem;
+    }
+    .section-title {
+      font-family: var(--font-display); font-weight: 800;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      letter-spacing: -0.03em; line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .section-lead { color: var(--muted); max-width: 500px; line-height: 1.75; margin-bottom: 3.5rem; }
+
+    /* ─── SERVICES ──────────────────────────────────────────── */
+    .services { background: var(--bg); }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1px; border: 1px solid var(--border);
+      background: var(--border);
+      overflow: hidden;
+    }
+
+    .service-card {
+      background: var(--bg);
+      padding: clamp(1.5rem, 3vw, 2.5rem);
+      position: relative; overflow: hidden;
+      transition: background .3s;
+      cursor: default;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--primary-glow2);
+      opacity: 0; transition: opacity .35s;
+    }
+    .service-card:hover { background: var(--bg2); }
+    .service-card:hover::before { opacity: 1; }
+
+    .service-icon {
+      width: 50px; height: 50px;
+      background: var(--primary-glow);
+      border: 1px solid hsla(220,70%,55%,.18);
+      border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; margin-bottom: 1.5rem;
+      position: relative; z-index: 1;
+      transition: transform .3s;
+    }
+    .service-card:hover .service-icon { transform: scale(1.1); }
+
+    .service-name {
+      font-family: var(--font-display); font-weight: 700;
+      font-size: 1.1rem; margin-bottom: .6rem;
+      position: relative; z-index: 1;
+    }
+    .service-desc {
+      font-size: .88rem; color: var(--muted); line-height: 1.72;
+      position: relative; z-index: 1;
+    }
+    .service-arrow {
+      margin-top: 1.5rem; color: var(--primary-l);
+      font-size: 1rem; display: inline-block;
+      transition: transform .25s;
+      position: relative; z-index: 1;
+    }
+    .service-card:hover .service-arrow { transform: translate(3px, -3px); }
+
+    /* ─── TEAM ──────────────────────────────────────────────── */
+    .team { background: var(--bg2); }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .team-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      position: relative; cursor: pointer;
+      transition: border-color .3s, transform .35s, box-shadow .35s;
+    }
+    .team-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-6px);
+      box-shadow: 0 24px 48px hsla(220, 70%, 45%, .16);
+    }
+
+    .team-photo {
+      width: 100%; height: 260px;
+      object-fit: cover; object-position: top center;
+      background: var(--bg3);
+      transition: transform .5s, filter .4s;
+    }
+    .team-card:hover .team-photo { transform: scale(1.04); filter: brightness(1.05); }
+
+    .team-placeholder {
+      width: 100%; height: 260px;
+      background: linear-gradient(145deg, var(--bg3) 0%, hsl(220, 25%, 18%) 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-size: 4rem; font-weight: 800;
+      color: hsla(220, 70%, 60%, .2);
+      border-bottom: 1px solid var(--border);
+      transition: background .3s;
+      overflow: hidden;
+      position: relative;
+    }
+    .team-placeholder::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 80%, var(--primary-glow) 0%, transparent 65%);
+      opacity: 0; transition: opacity .4s;
+    }
+    .team-card:hover .team-placeholder::after { opacity: 1; }
+
+    .team-info { padding: 1.4rem; }
+    .team-name {
+      font-family: var(--font-display); font-weight: 700;
+      font-size: 1.05rem; margin-bottom: .3rem;
+    }
+    .team-role {
+      font-size: .75rem; color: var(--primary-l);
+      text-transform: uppercase; letter-spacing: .1em;
+    }
+    .team-social { display: flex; gap: .6rem; margin-top: 1rem; flex-wrap: wrap; }
+    .social-btn {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .4rem .85rem;
+      border: 1px solid var(--border); border-radius: 99px;
+      color: var(--muted); font-size: .75rem; font-weight: 500;
+      transition: border-color .25s, color .25s, background .25s;
+    }
+    .social-btn:hover {
+      border-color: var(--primary); color: var(--primary-l);
+      background: var(--primary-glow);
+    }
+    .social-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+    /* ─── PROCESS ───────────────────────────────────────────── */
+    .process { background: var(--bg); }
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2px; background: var(--border);
+      border: 1px solid var(--border);
+      counter-reset: step;
+    }
+    .process-step {
+      background: var(--bg);
+      padding: 2rem 1.8rem;
+      counter-increment: step;
+      position: relative;
+      transition: background .3s;
+    }
+    .process-step:hover { background: var(--bg2); }
+    .process-step-num {
+      font-family: var(--font-display); font-weight: 800;
+      font-size: 3rem; line-height: 1;
+      color: var(--primary-glow);
+      color: hsla(220, 70%, 55%, .12);
+      margin-bottom: 1rem;
+    }
+    .process-step-num::before { content: counter(step, decimal-leading-zero); }
+    .process-step-title {
+      font-family: var(--font-display); font-weight: 700;
+      font-size: 1rem; margin-bottom: .5rem;
+    }
+    .process-step-desc { font-size: .85rem; color: var(--muted); line-height: 1.68; }
+
+    /* ─── CTA BANNER ────────────────────────────────────────── */
+    .cta-banner {
+      background: var(--bg2);
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .cta-banner::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 70% at 50% 110%, var(--primary-glow) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .cta-banner::after {
+      content: 'NEXUS';
+      position: absolute; font-family: var(--font-display); font-size: 20vw;
+      font-weight: 800; color: hsla(220, 70%, 55%, .03);
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      pointer-events: none; white-space: nowrap; letter-spacing: -0.06em;
+    }
+    .cta-banner .cta-content { position: relative; z-index: 1; }
+    .cta-title {
+      font-family: var(--font-display); font-weight: 800;
+      font-size: clamp(2rem, 5vw, 3.8rem);
+      letter-spacing: -0.04em; margin-bottom: 1.2rem;
+      line-height: 1.05;
+    }
+    .cta-sub {
+      color: var(--muted); max-width: 440px;
+      margin: 0 auto 2.5rem; line-height: 1.75; font-size: .95rem;
+    }
+
+    /* ─── CONTACT ───────────────────────────────────────────── */
+    .contact { background: var(--bg); }
+    .contact-center {
+      text-align: center; max-width: 560px; margin: 0 auto;
+    }
+    .contact-center .section-tag,
+    .contact-center .section-title,
+    .contact-center .section-lead { text-align: center; margin-left: auto; margin-right: auto; }
+    .btn-whatsapp {
+      display: inline-flex; align-items: center; gap: .6rem;
+      background: #25D366; color: #fff;
+      padding: 1rem 2.2rem; border-radius: 99px;
+      font-size: 1rem; font-weight: 600;
+      transition: background .25s, transform .2s;
+      margin-top: .5rem;
+    }
+    .btn-whatsapp:hover { background: #1ebe5d; transform: translateY(-2px); }
+    .btn-whatsapp svg { width: 20px; height: 20px; }
+
+    /* ─── FOOTER ────────────────────────────────────────────── */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+    }
+    .footer-inner {
+      display: grid; grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 3rem; padding: 4rem clamp(1.5rem, 5vw, 3.5rem) 3rem;
+    }
+    .footer-brand p {
+      font-size: .88rem; color: var(--muted); line-height: 1.72;
+      max-width: 280px; margin-top: .8rem;
+    }
+    .footer-logo {
+      font-family: var(--font-display); font-weight: 800;
+      font-size: 1.3rem; letter-spacing: -0.03em;
+    }
+    .footer-logo span { color: var(--primary-l); }
+    .footer-col-title {
+      font-family: var(--font-display); font-weight: 700;
+      font-size: .8rem; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1.2rem;
+    }
+    .footer-links { display: flex; flex-direction: column; gap: .7rem; }
+    .footer-links a { font-size: .88rem; color: var(--muted); transition: color .25s; }
+    .footer-links a:hover { color: var(--primary-l); }
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding: 1.2rem clamp(1.5rem, 5vw, 3.5rem);
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-bottom p { font-size: .78rem; color: var(--muted); }
+    .footer-socials { display: flex; gap: .7rem; }
+    .footer-social {
+      width: 34px; height: 34px;
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); font-size: .7rem; font-weight: 600;
+      transition: border-color .25s, color .25s;
+    }
+    .footer-social:hover { border-color: var(--primary-l); color: var(--primary-l); }
+
+    /* ─── SCROLL REVEAL ─────────────────────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(32px);
+      transition: opacity .75s ease, transform .75s ease;
+    }
+    .reveal.show { opacity: 1; transform: none; }
+    .reveal-d1 { transition-delay: .1s; }
+    .reveal-d2 { transition-delay: .2s; }
+    .reveal-d3 { transition-delay: .3s; }
+    .reveal-d4 { transition-delay: .4s; }
+
+    /* ─── RESPONSIVE ────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta { display: none; }
+      .nav-toggle { display: flex; }
+      .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-stats { gap: 1.5rem; }
+    }
+    @media (max-width: 480px) {
+      .services-grid, .process-steps { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="nav" id="nav">
+  <a href="#" class="nav-logo">NEX<span>US</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">Serviços</a></li>
+    <li><a href="#team">Equipe</a></li>
+    <li><a href="#process">Processo</a></li>
+    <li><a href="#contact">Contato</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Fale conosco</a>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<nav class="nav-mobile" id="navMobile">
+  <a href="#services" class="nav-mobile-link">Serviços</a>
+  <a href="#team" class="nav-mobile-link">Equipe</a>
+  <a href="#process" class="nav-mobile-link">Processo</a>
+  <a href="#contact" class="nav-mobile-link">Contato</a>
+  <a href="#contact" class="nav-cta">Fale conosco</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-grid"></div>
+  <div class="hero-orb"></div>
+  <div class="hero-orb2"></div>
+  <div class="hero-content">
+    <div class="hero-badge reveal">Agência Digital &middot; Est. 2024</div>
+    <h1 class="reveal">Soluções digitais que<br>conectam marcas a <em>resultados</em>.</h1>
+    <p class="hero-sub reveal">Criamos experiências digitais excepcionais através de design estratégico, marketing orientado por dados e produção audiovisual de alto impacto.</p>
+    <div class="hero-actions reveal">
+      <a href="#contact" class="btn btn-primary">Fale com a equipe →</a>
+      <a href="#services" class="btn btn-outline">Ver serviços</a>
+    </div>
+    <div class="hero-stats reveal">
+      <div>
+        <div class="stat-num">4+</div>
+        <div class="stat-label">Especialistas</div>
+      </div>
+      <div>
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Foco em resultado</div>
+      </div>
+      <div>
+        <div class="stat-num">360°</div>
+        <div class="stat-label">Visão de marca</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section services" id="services">
+  <div class="section-tag reveal">O que fazemos</div>
+  <h2 class="section-title reveal">Sua marca, nossa expertise.</h2>
+  <p class="section-lead reveal">Do audiovisual ao design estratégico, entregamos soluções completas para a presença digital da sua marca.</p>
+  <div class="services-grid">
+    <div class="service-card reveal reveal-d1">
+      <div class="service-icon">🎬</div>
+      <div class="service-name">Vídeo & Produção</div>
+      <p class="service-desc">Conteúdo audiovisual que prende atenção e comunica com clareza — do roteiro à entrega final, cuidamos de cada detalhe.</p>
+      <div class="service-arrow">↗</div>
+    </div>
+    <div class="service-card reveal reveal-d2">
+      <div class="service-icon">⚡</div>
+      <div class="service-name">Motion Graphics</div>
+      <p class="service-desc">Animações e motion design que elevam a percepção da sua marca em qualquer plataforma digital ou campanha.</p>
+      <div class="service-arrow">↗</div>
+    </div>
+    <div class="service-card reveal reveal-d3">
+      <div class="service-icon">✦</div>
+      <div class="service-name">Design Estratégico</div>
+      <p class="service-desc">Identidade visual e design de interface com propósito — criados para converter, fidelizar e diferenciar sua marca.</p>
+      <div class="service-arrow">↗</div>
+    </div>
+    <div class="service-card reveal reveal-d4">
+      <div class="service-icon">📈</div>
+      <div class="service-name">Marketing Digital</div>
+      <p class="service-desc">Estratégia de conteúdo, performance e presença digital orientada por dados e resultados reais e mensuráveis.</p>
+      <div class="service-arrow">↗</div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="section team" id="team">
+  <div class="section-tag reveal">Quem somos</div>
+  <h2 class="section-title reveal">A equipe por trás da NEXUS.</h2>
+  <p class="section-lead reveal">Profissionais apaixonados por criar resultados reais para marcas que querem se destacar no ambiente digital.</p>
+  <div class="team-grid">
+
+    <div class="team-card reveal reveal-d1">
+      <!-- Para usar foto real: substitua a div abaixo por <img class="team-photo" src="foto-alysson.jpg" alt="Alysson"> -->
+      <div class="team-placeholder"><span>A</span></div>
+      <div class="team-info">
+        <div class="team-name">Alysson</div>
+        <div class="team-role">Videomaker</div>
+        <div class="team-social">
+          <!-- Atualize o href: https://wa.me/55SEUNUMERO -->
+          <a href="https://wa.me/55XXXXXXXXXXX" target="_blank" class="social-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+          <!-- Atualize o href com o link do portfólio -->
+          <a href="#" target="_blank" class="social-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Portfólio
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="team-card reveal reveal-d2">
+      <div class="team-placeholder"><span>D</span></div>
+      <div class="team-info">
+        <div class="team-name">Douglas</div>
+        <div class="team-role">Motion Graphics</div>
+        <div class="team-social">
+          <a href="https://wa.me/55XXXXXXXXXXX" target="_blank" class="social-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+          <a href="#" target="_blank" class="social-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Portfólio
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="team-card reveal reveal-d3">
+      <div class="team-placeholder"><span>G</span></div>
+      <div class="team-info">
+        <div class="team-name">Geanderson</div>
+        <div class="team-role">Videomaker</div>
+        <div class="team-social">
+          <a href="https://wa.me/55XXXXXXXXXXX" target="_blank" class="social-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+          <a href="#" target="_blank" class="social-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Portfólio
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="team-card reveal reveal-d4">
+      <div class="team-placeholder"><span>P</span></div>
+      <div class="team-info">
+        <div class="team-name">Pedro</div>
+        <div class="team-role">Designer</div>
+        <div class="team-social">
+          <a href="https://wa.me/55XXXXXXXXXXX" target="_blank" class="social-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+          <a href="#" target="_blank" class="social-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Portfólio
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="section process" id="process">
+  <div class="section-tag reveal">Como trabalhamos</div>
+  <h2 class="section-title reveal">Nosso processo.</h2>
+  <p class="section-lead reveal">Um fluxo transparente, do briefing à entrega, para garantir que cada projeto supere as expectativas.</p>
+  <div class="process-steps">
+    <div class="process-step reveal reveal-d1">
+      <div class="process-step-num"></div>
+      <div class="process-step-title">Briefing & Imersão</div>
+      <p class="process-step-desc">Entendemos seu negócio, público-alvo, objetivos e posicionamento antes de criar qualquer coisa.</p>
+    </div>
+    <div class="process-step reveal reveal-d2">
+      <div class="process-step-num"></div>
+      <div class="process-step-title">Estratégia & Conceito</div>
+      <p class="process-step-desc">Definimos a linha criativa, referências e entregáveis. Tudo alinhado com você antes de executar.</p>
+    </div>
+    <div class="process-step reveal reveal-d3">
+      <div class="process-step-num"></div>
+      <div class="process-step-title">Produção & Criação</div>
+      <p class="process-step-desc">Nossa equipe trabalha com agilidade e qualidade, mantendo você informado em cada etapa.</p>
+    </div>
+    <div class="process-step reveal reveal-d4">
+      <div class="process-step-num"></div>
+      <div class="process-step-title">Entrega & Resultados</div>
+      <p class="process-step-desc">Entregamos, analisamos métricas e otimizamos continuamente para maximizar seu retorno.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="section cta-banner">
+  <div class="cta-content">
+    <h2 class="cta-title reveal">Pronto para elevar<br>sua marca?</h2>
+    <p class="cta-sub reveal">Entre em contato e descubra como a NEXUS pode transformar sua presença digital em resultados reais.</p>
+    <a href="#contact" class="btn btn-primary reveal">Falar com a equipe →</a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section contact" id="contact">
+  <div class="contact-center">
+    <div class="section-tag reveal">Entre em contato</div>
+    <h2 class="section-title reveal">Vamos trabalhar juntos.</h2>
+    <p class="section-lead reveal">Fale diretamente com nossa equipe pelo WhatsApp e descubra como a NEXUS pode transformar sua marca.</p>
+    <!-- Atualize o href com o número da agência: https://wa.me/55SEUNUMERO -->
+    <a href="https://wa.me/55XXXXXXXXXXX" target="_blank" class="btn-whatsapp reveal">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Falar no WhatsApp
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">NEX<span>US</span></div>
+      <p>Criamos experiências digitais excepcionais que conectam marcas a resultados reais. Seu sucesso é nossa missão.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Serviços</div>
+      <div class="footer-links">
+        <a href="#services">Vídeo & Produção</a>
+        <a href="#services">Motion Graphics</a>
+        <a href="#services">Design Estratégico</a>
+        <a href="#services">Marketing Digital</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Empresa</div>
+      <div class="footer-links">
+        <a href="#team">Nossa Equipe</a>
+        <a href="#process">Como trabalhamos</a>
+        <a href="#contact">Contato</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 NEXUS Agency. Todos os direitos reservados.</p>
+    <div class="footer-socials">
+      <!-- Atualize os hrefs com os links reais -->
+      <a href="#" class="footer-social" aria-label="Instagram">ig</a>
+      <a href="#" class="footer-social" aria-label="LinkedIn">in</a>
+      <a href="#" class="footer-social" aria-label="TikTok">tt</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── SCRIPTS ──────────────────────────────────────────────── -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  /* ── Custom Cursor ── */
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top  = e.clientY + 'px';
+  });
+  document.querySelectorAll('a, button, .service-card, .team-card').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('grow'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('grow'));
+  });
+
+  /* ── Navbar scroll ── */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  /* ── Mobile menu ── */
+  const toggle   = document.getElementById('navToggle');
+  const mobileNav = document.getElementById('navMobile');
+  toggle.addEventListener('click', () => {
+    const open = mobileNav.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open);
+  });
+  document.querySelectorAll('.nav-mobile-link, .nav-mobile .nav-cta').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileNav.classList.remove('open');
+      toggle.classList.remove('open');
+      toggle.setAttribute('aria-expanded', false);
+    });
+  });
+
+  /* ── Scroll Reveal ── */
+  const revealObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('show'); revealObs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+</script>
+</body>
+</html>
